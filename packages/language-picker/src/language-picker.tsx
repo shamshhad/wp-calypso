@@ -3,6 +3,7 @@
  * External dependencies
  */
 import React, { useState } from 'react';
+import { intersection } from 'lodash';
 
 /**
  * WordPress dependencies
@@ -30,6 +31,41 @@ type Props = {
 	localizedLanguageNames?: LocalizedLanguageNames;
 };
 
+/**
+ * Pick the first language group that includes the currently selected language.
+ * If no language is currently selected then just use the default. Similarly,
+ * if no language group can be found with the current language in it, use the default.
+ *
+ * @param selectedLanguage The currently selected language, if one exists.
+ * @param languageGroups The language groups to choose from.
+ * @param defaultLananguageGroupId The default language group to use when a language isn't picked or when the selected language isn't found in any of the groups.
+ */
+const findBestDefaultLanguageGroupId = (
+	selectedLanguage: Language | undefined,
+	languageGroups: LanguageGroup[],
+	defaultLananguageGroupId: string
+): string => {
+	if ( ! selectedLanguage ) {
+		return defaultLananguageGroupId;
+	}
+
+	if ( selectedLanguage.popular ) {
+		return 'popular';
+	}
+
+	return (
+		languageGroups.find( ( lg ) => {
+			const sharedTerritories = intersection( lg.subTerritories, selectedLanguage.territories );
+
+			if ( sharedTerritories.length > 0 ) {
+				return lg;
+			}
+
+			return false;
+		} )?.id ?? defaultLananguageGroupId
+	);
+};
+
 const LanguagePicker = ( {
 	onSelectLanguage,
 	languages,
@@ -38,7 +74,9 @@ const LanguagePicker = ( {
 	search,
 	localizedLanguageNames,
 }: Props ) => {
-	const [ filter, setFilter ] = useState( languageGroups[ 0 ].id );
+	const [ filter, setFilter ] = useState(
+		findBestDefaultLanguageGroupId( selectedLanguage, languageGroups, languageGroups[ 0 ].id )
+	);
 
 	const getFilteredLanguages = () => {
 		switch ( filter ) {

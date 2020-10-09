@@ -11,40 +11,23 @@ import { Button } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 /**
+ * Internal dependencies
+ */
+import { Language, LanguageGroup } from './Language';
+import { getSearchedLanguages, LocalizedLanguageNames } from './search';
+
+/**
  * Style dependencies
  */
 import './style.scss';
-
-export type LanguageGroup = {
-	id: string;
-	name: () => string;
-	subTerritories?: string[];
-	countries?: string[];
-	default?: boolean;
-};
-
-type LanguageSlug = string;
-type WPLocale = string;
-
-type BaseLanguage = {
-	langSlug: LanguageSlug;
-	name: string;
-	popular?: number;
-	rtl?: boolean;
-	territories: string[];
-	value: number;
-	wpLocale: WPLocale | '';
-};
-
-type SubLanguage = BaseLanguage & { parentLangSlug: string };
-
-export type Language = BaseLanguage | SubLanguage;
 
 type Props = {
 	onSelectLanguage: ( language: Language ) => void;
 	languages: Language[];
 	languageGroups: LanguageGroup[];
 	selectedLanguage?: Language;
+	search?: string;
+	localizedLanguageNames?: LocalizedLanguageNames;
 };
 
 const LanguagePicker = ( {
@@ -52,8 +35,9 @@ const LanguagePicker = ( {
 	languages,
 	languageGroups,
 	selectedLanguage,
+	search,
+	localizedLanguageNames,
 }: Props ) => {
-	const { __ } = useI18n();
 	const [ filter, setFilter ] = useState( languageGroups[ 0 ].id );
 
 	const getFilteredLanguages = () => {
@@ -92,18 +76,34 @@ const LanguagePicker = ( {
 		} );
 	};
 
+	const shouldDisplayRegions = ! search;
+
+	const languagesToRender = search
+		? getSearchedLanguages( languages, search, localizedLanguageNames )
+		: getFilteredLanguages();
+
 	return (
 		<div className="language-picker-component">
 			<div className="language-picker-component__labels">
-				<div className="language-picker-component__regions-label">{ __( 'regions' ) }</div>
-				<div className="language-picker-component__languages-label">{ __( 'language' ) }</div>
+				{ shouldDisplayRegions ? (
+					<>
+						<div className="language-picker-component__regions-label">{ __( 'regions' ) }</div>
+						<div className="language-picker-component__languages-label">{ __( 'language' ) }</div>
+					</>
+				) : (
+					<div className="language-picker-component__search-results-label">
+						{ __( 'search result' ) }
+					</div>
+				) }
 			</div>
 			<div className="language-picker-component__content">
-				<div className="language-picker-component__category-filters">
-					{ renderCategoryButtons() }
-				</div>
+				{ shouldDisplayRegions && (
+					<div className="language-picker-component__category-filters">
+						{ renderCategoryButtons() }
+					</div>
+				) }
 				<div className="language-picker-component__language-buttons">
-					{ getFilteredLanguages().map( ( language ) => (
+					{ languagesToRender.map( ( language ) => (
 						<Button
 							isPrimary={ selectedLanguage && language.langSlug === selectedLanguage.langSlug }
 							className="language-picker-component__language-button"

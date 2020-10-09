@@ -44,9 +44,16 @@ type Props = {
 	onSelectLanguage: ( language: Language ) => void;
 	languages: Language[];
 	languageGroups: LanguageGroup[];
+	selectedLanguage?: Language;
 };
 
-const LanguagePicker = ( { onSelectLanguage, languages, languageGroups }: Props ) => {
+const LanguagePicker = ( {
+	onSelectLanguage,
+	languages,
+	languageGroups,
+	selectedLanguage,
+}: Props ) => {
+	const { __ } = useI18n();
 	const [ filter, setFilter ] = useState( languageGroups[ 0 ].id );
 
 	const getFilteredLanguages = () => {
@@ -95,6 +102,7 @@ const LanguagePicker = ( { onSelectLanguage, languages, languageGroups }: Props 
 				<div className="language-picker-component__language-buttons">
 					{ getFilteredLanguages().map( ( language ) => (
 						<Button
+							isPrimary={ selectedLanguage && language.langSlug === selectedLanguage.langSlug }
 							className="language-picker-component__language-button"
 							key={ language.langSlug }
 							onClick={ () => onSelectLanguage( language ) }

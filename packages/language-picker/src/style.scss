@@ -14,6 +14,18 @@
 			border-bottom: 2px solid #3582c4;
 		}
 	}
+
+	.language-picker-component__labels {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		font-family: $default-font;
+		margin: 6px 12px;
+		color: $gray-600;
+		/* stylelint-disable-next-line scales/font-size */
+		font-size: 13px;
+		text-transform: uppercase;
+	}	
 	
 	.language-picker-component__regions-label {
 		font-family: $default-font;
@@ -28,6 +40,7 @@
 		display: flex;
 	}
 	
+	.language-picker-component__labels > div,
 	.language-picker-component__category-filters {
 		min-width: 170px;
 	
@@ -45,5 +58,4 @@
 	
 	.language-picker-component__language-button {
 		width: 165px;
-	}
 }

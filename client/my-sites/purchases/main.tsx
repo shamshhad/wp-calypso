@@ -75,7 +75,7 @@ export function PurchaseDetails( {
 			/>
 
 			<ManagePurchase
-				cardTitle={ translate( 'Subscription settings' ) }
+				cardTitle={ translate( 'Purchase Settings' ) }
 				purchaseId={ purchaseId }
 				siteSlug={ siteSlug }
 				showHeader={ false }

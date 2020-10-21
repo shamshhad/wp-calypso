@@ -120,7 +120,8 @@ export function* getPlansDetails( locale = 'en' ) {
 				pathSlug: rawPlan.path_slug,
 				features: rawPlan.highlighted_features,
 				featuresSlugs: rawPlan.features.reduce(
-					( acc: Record< string, boolean >, cur: string ) => ( { ...acc, [ cur ]: true } )
+					( acc: Record< string, boolean >, cur: string ) => ( { ...acc, [ cur ]: true } ),
+					{}
 				),
 			};
 

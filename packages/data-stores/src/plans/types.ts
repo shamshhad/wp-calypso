@@ -29,7 +29,7 @@ export interface Plan {
 export interface APIPlan {
 	product_id: number;
 	product_name: string;
-	meta: object;
+	meta: Record< string, unknown >;
 	prices: {
 		AUD: number;
 		BRL: number;
@@ -85,7 +85,7 @@ export interface APIPlan {
 	price: string;
 	formatted_price: string;
 	raw_price: number;
-	tagline: object;
+	tagline: Record< string, unknown >;
 	currency_code: string;
 }
 

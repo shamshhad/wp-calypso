@@ -1,0 +1,41 @@
+.language-picker__modal-heading {
+    margin: 6px 12px 24px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.language-picker__modal-heading-text {
+    font-size: 2rem;
+}
+
+.language-picker__modal-search {
+    position: relative;
+    width: 250px;
+}
+
+.language-picker__dialog {
+    &.dialog.card {
+        width: 90%;
+        height: 80%;
+        justify-content: space-between;
+    }
+
+    .dialog__content {
+        flex: 1 1 auto;
+    }
+
+    .dialog__action-buttons {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        position: relative;
+        margin-top: 1.5rem;
+        justify-content: space-between;
+
+        .components-button {
+            margin-left: 1rem;
+        }
+    }
+}

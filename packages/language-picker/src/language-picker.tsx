@@ -4,11 +4,12 @@
  */
 import React, { useState } from 'react';
 import { intersection } from 'lodash';
+import Search from '@automattic/search';
 
 /**
  * WordPress dependencies
  */
-import { Button } from '@wordpress/components';
+import { Button, CustomSelectControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -27,7 +28,6 @@ type Props = {
 	languages: Language[];
 	languageGroups: LanguageGroup[];
 	selectedLanguage?: Language;
-	search?: string;
 	localizedLanguageNames?: LocalizedLanguageNames;
 };
 
@@ -71,12 +71,13 @@ const LanguagePicker = ( {
 	languages,
 	languageGroups,
 	selectedLanguage,
-	search,
 	localizedLanguageNames,
 }: Props ) => {
 	const [ filter, setFilter ] = useState(
 		findBestDefaultLanguageGroupId( selectedLanguage, languageGroups, languageGroups[ 0 ].id )
 	);
+
+	const [ search, setSearch ] = useState( '' );
 
 	const getFilteredLanguages = () => {
 		switch ( filter ) {
@@ -122,8 +123,30 @@ const LanguagePicker = ( {
 		? getSearchedLanguages( languages, search, localizedLanguageNames )
 		: getFilteredLanguages();
 
+	const selectControlOptions = languageGroups.map( ( lg ) => ( { key: lg.id, name: lg.name() } ) );
+
 	return (
 		<div className="language-picker-component">
+			<div className="language-picker-component__heading">
+				<div className="language-picker-component__title wp-brand-font">
+					{ __( 'Select a language' ) }
+				</div>
+				<div className="language-picker-component__search">
+					<CustomSelectControl
+						label={ __( 'regions' ) }
+						hideLabelFromVision
+						value={ selectControlOptions.find( ( option ) => option.key === filter ) }
+						options={ selectControlOptions }
+						onChange={ ( { selectedItem } ) => selectedItem && setFilter( selectedItem.key ) }
+					/>
+					<Search
+						onSearch={ setSearch }
+						pinned
+						fitsContainer
+						placeholder={ __( 'Search languages…' ) }
+					/>
+				</div>
+			</div>
 			<div className="language-picker-component__labels">
 				{ shouldDisplayRegions ? (
 					<>

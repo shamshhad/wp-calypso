@@ -3,6 +3,47 @@
 @import '~@wordpress/base-styles/variables';
 
 .language-picker-component {
+	.language-picker-component__heading {
+		margin: 6px 12px 24px;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		align-items: center;
+	}
+
+	.language-picker-component__title {
+		font-size: 2rem;
+		flex: 1;
+		white-space: nowrap;
+	}
+
+	.components-custom-select-control {
+		width: 100%;
+		height: 100%;
+
+		.components-custom-select-control__button {
+			width: 85%;
+			height: 100%;
+		}
+
+		.components-custom-select-control__menu {
+			margin: 0;
+		}
+
+		@include break-small() {
+			display: none;
+		}
+	}
+
+	.language-picker-component__search {
+		position: relative;
+		width: 225px;
+		height: 34px;
+
+		flex: 1 1 48%;
+	}
+
 	.language-picker-component__language-group {
 		width: 100%;
 	}
@@ -16,7 +57,12 @@
 	}
 
 	.language-picker-component__labels {
-		display: flex;
+		display: none;
+
+		@include break-small() {
+			display: flex;
+		}
+
 		flex-direction: row;
 		flex-wrap: nowrap;
 		font-family: $default-font;
@@ -35,9 +81,17 @@
 	.language-picker-component__category-filters {
 		min-width: 170px;
 	
-		@include break-small {
+		@include break-small() {
 			min-width: 220px;
 			margin-right: 60px;
+		}
+	}
+
+	.language-picker-component__category-filters {
+		display: none;
+
+		@include break-small() {
+			display: initial;
 		}
 	}
 
@@ -48,6 +102,9 @@
 	}
 
 	.language-picker-component__language-button {
-		width: 165px;
+		width: 100%;
+		@include break-small() {
+			width: 165px;
+		}
 	}
 }

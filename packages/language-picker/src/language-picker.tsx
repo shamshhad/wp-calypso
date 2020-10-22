@@ -105,11 +105,13 @@ const LanguagePicker = ( {
 			};
 
 			return (
-				<div key={ languageGroup.id }>
-					<Button onClick={ onClick } className="language-picker-component__language-group">
-						<span className={ isSelected ? 'is-selected' : '' }>{ languageGroup.name() }</span>
-					</Button>
-				</div>
+				<Button
+					key={ languageGroup.id }
+					onClick={ onClick }
+					className="language-picker-component__language-group"
+				>
+					<span className={ isSelected ? 'is-selected' : '' }>{ languageGroup.name() }</span>
+				</Button>
 			);
 		} );
 	};
@@ -130,7 +132,7 @@ const LanguagePicker = ( {
 					</>
 				) : (
 					<div className="language-picker-component__search-results-label">
-						{ __( 'search result' ) }
+						{ __( 'Search results' ) }
 					</div>
 				) }
 			</div>

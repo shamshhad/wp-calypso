@@ -84,8 +84,11 @@ export interface Props {
 	/** Called when the domain search query is changed */
 	onSetDomainSearch: ( value: string ) => void;
 
-	/** Weather to segregate free and paid domains from each other */
+	/** Whether to segregate free and paid domains from each other */
 	segregateFreeAndPaid?: boolean;
+
+	/** Whether to show search field or not. Defaults to true */
+	showSearchField?: boolean;
 }
 
 const DomainPicker: FunctionComponent< Props > = ( {
@@ -104,6 +107,7 @@ const DomainPicker: FunctionComponent< Props > = ( {
 	isCheckingDomainAvailability,
 	existingSubdomain,
 	segregateFreeAndPaid = false,
+	showSearchField = true,
 } ) => {
 	const { __ } = useI18n();
 	const label = __( 'Search for a domain' );
@@ -192,19 +196,21 @@ const DomainPicker: FunctionComponent< Props > = ( {
 	return (
 		<div className="domain-picker">
 			{ header && header }
-			<div className="domain-picker__search">
-				<div className="domain-picker__search-icon">
-					<Icon icon={ search } />
+			{ showSearchField && (
+				<div className="domain-picker__search">
+					<div className="domain-picker__search-icon">
+						<Icon icon={ search } />
+					</div>
+					<TextControl
+						hideLabelFromVision
+						label={ label }
+						placeholder={ label }
+						onChange={ handleInputChange }
+						onBlur={ onDomainSearchBlurValue }
+						value={ domainSearch }
+					/>
 				</div>
-				<TextControl
-					hideLabelFromVision
-					label={ label }
-					placeholder={ label }
-					onChange={ handleInputChange }
-					onBlur={ onDomainSearchBlurValue }
-					value={ domainSearch }
-				/>
-			</div>
+			) }
 			{ showErrorMessage && (
 				<div className="domain-picker__error">
 					<p className="domain-picker__error-message">

@@ -8,7 +8,7 @@ import type { APIFetchOptions } from '@wordpress/api-fetch';
  * Internal dependencies
  */
 import { setFeatures, setFeaturesByType, setPlans, setPrices } from './actions';
-import type { APIPlan, PlanSlug, PlanDetail, PlanFeature, Plan } from './types';
+import type { APIPlan, APIPlanDetail, PlanSlug, PlanFeature, Plan } from './types';
 import {
 	currenciesFormats,
 	PLAN_FREE,
@@ -86,24 +86,9 @@ export function* getPlansDetails( locale = 'en' ) {
 		} as APIFetchOptions );
 
 		const plans: Record< string, Plan > = {};
-
-		const generalFeatures: PlanDetail = {
-			id: 'general',
-			name: null,
-			features: [],
-		};
-
 		const features: Record< string, PlanFeature > = {};
 
 		rawPlansDetails.features.forEach( ( feature: Record< string, string > ) => {
-			generalFeatures.features.push( {
-				id: feature.id,
-				name: feature.name,
-				description: feature.description,
-				type: 'checkbox',
-				data: [ true, true, true, true, true ],
-			} );
-
 			features[ feature.id ] = {
 				id: feature.id,
 				name: feature.name,
@@ -111,14 +96,14 @@ export function* getPlansDetails( locale = 'en' ) {
 			};
 		} );
 
-		rawPlansDetails.plans.forEach( ( rawPlan: any ) => {
+		rawPlansDetails.plans.forEach( ( rawPlan: APIPlanDetail ) => {
 			const plan: Plan = {
 				title: rawPlan.short_name,
 				description: rawPlan.tagline,
 				productId: rawPlan.products[ 0 ].plan_id,
 				storeSlug: mapShortNameToProductSlug[ rawPlan.nonlocalized_short_name ],
-				pathSlug: rawPlan.path_slug,
 				features: rawPlan.highlighted_features,
+				pathSlug: rawPlan.nonlocalized_short_name?.toLowerCase(),
 				featuresSlugs: rawPlan.features.reduce(
 					( acc: Record< string, boolean >, cur: string ) => ( { ...acc, [ cur ]: true } ),
 					{}

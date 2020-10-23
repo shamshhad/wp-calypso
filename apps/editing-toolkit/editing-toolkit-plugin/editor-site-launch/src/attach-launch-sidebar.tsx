@@ -9,7 +9,8 @@ import { registerPlugin as originalRegisterPlugin, PluginSettings } from '@wordp
  * Internal dependencies
  */
 import LaunchModal from './launch-modal';
-import { useOnLaunch } from './hooks';
+import { hooks as launchHooks } from '@automattic/launch';
+
 import { LAUNCH_STORE } from './stores';
 
 const registerPlugin = ( name: string, settings: Omit< PluginSettings, 'icon' > ) =>
@@ -24,7 +25,7 @@ registerPlugin( 'a8c-editor-site-launch', {
 		);
 
 		// handle redirects to checkout / my home after launch
-		useOnLaunch();
+		launchHooks.useOnLaunch();
 
 		React.useEffect( () => {
 			// @automattic/viewport doesn't have a breakpoint for medium (782px)

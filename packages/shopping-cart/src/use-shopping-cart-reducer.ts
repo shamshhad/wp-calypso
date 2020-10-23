@@ -79,11 +79,14 @@ function shoppingCartReducer(
 	switch ( action.type ) {
 		case 'FETCH_INITIAL_RESPONSE_CART':
 			return { ...state, cacheStatus: 'pending' };
+
 		case 'CART_RELOAD':
 			debug( 'reloading cart from server' );
 			return getInitialShoppingCartState();
+
 		case 'CLEAR_QUEUED_ACTIONS':
 			return { ...state, queuedActions: [] };
+
 		case 'REMOVE_CART_ITEM': {
 			const uuidToRemove = action.uuidToRemove;
 			debug( 'removing item from cart with uuid', uuidToRemove );
@@ -93,22 +96,23 @@ function shoppingCartReducer(
 				cacheStatus: 'invalid',
 			};
 		}
-		case 'CART_PRODUCTS_ADD': {
+
+		case 'CART_PRODUCTS_ADD':
 			debug( 'adding items to cart', action.products );
 			return {
 				...state,
 				responseCart: addItemsToResponseCart( state.responseCart, action.products ),
 				cacheStatus: 'invalid',
 			};
-		}
-		case 'CART_PRODUCTS_REPLACE_ALL': {
+
+		case 'CART_PRODUCTS_REPLACE_ALL':
 			debug( 'replacing items in cart with', action.products );
 			return {
 				...state,
 				responseCart: replaceAllItemsInResponseCart( state.responseCart, action.products ),
 				cacheStatus: 'invalid',
 			};
-		}
+
 		case 'CART_PRODUCT_REPLACE': {
 			const uuidToReplace = action.uuidToReplace;
 			if (
@@ -121,7 +125,6 @@ function shoppingCartReducer(
 				return state;
 			}
 			debug( `replacing item with uuid ${ uuidToReplace } with`, action.productPropertiesToChange );
-
 			return {
 				...state,
 				responseCart: replaceItemInResponseCart(
@@ -132,31 +135,27 @@ function shoppingCartReducer(
 				cacheStatus: 'invalid',
 			};
 		}
-		case 'REMOVE_COUPON': {
+
+		case 'REMOVE_COUPON':
 			if ( couponStatus !== 'applied' ) {
 				debug( `coupon status is '${ couponStatus }'; not removing` );
 				return state;
 			}
-
 			debug( 'removing coupon' );
-
 			return {
 				...state,
 				responseCart: removeCouponFromResponseCart( state.responseCart ),
 				couponStatus: 'fresh',
 				cacheStatus: 'invalid',
 			};
-		}
+
 		case 'ADD_COUPON': {
 			const newCoupon = action.couponToAdd;
-
 			if ( couponStatus === 'applied' || couponStatus === 'pending' ) {
 				debug( `coupon status is '${ couponStatus }'; not submitting again` );
 				return state;
 			}
-
 			debug( 'adding coupon', newCoupon );
-
 			return {
 				...state,
 				responseCart: addCouponToResponseCart( state.responseCart, newCoupon ),
@@ -164,6 +163,7 @@ function shoppingCartReducer(
 				cacheStatus: 'invalid',
 			};
 		}
+
 		case 'RECEIVE_INITIAL_RESPONSE_CART': {
 			const response = action.initialResponseCart;
 			return {
@@ -173,21 +173,21 @@ function shoppingCartReducer(
 				cacheStatus: 'valid',
 			};
 		}
+
 		case 'REQUEST_UPDATED_RESPONSE_CART':
 			return {
 				...state,
 				cacheStatus: 'pending',
 			};
+
 		case 'RECEIVE_UPDATED_RESPONSE_CART': {
 			const response = action.updatedResponseCart;
 			const newCouponStatus = getUpdatedCouponStatus( couponStatus, response );
 			const cartKey = response.cart_key;
 			const productSlugsInCart = response.products.map( ( product ) => product.product_slug );
-
 			if ( cartKey === 'no-user' ) {
 				removeItemFromLocalStorage( productSlugsInCart );
 			}
-
 			return {
 				...state,
 				responseCart: response,
@@ -195,6 +195,7 @@ function shoppingCartReducer(
 				cacheStatus: 'valid',
 			};
 		}
+
 		case 'RAISE_ERROR':
 			switch ( action.error ) {
 				case 'GET_SERVER_CART_ERROR':
@@ -208,6 +209,7 @@ function shoppingCartReducer(
 				default:
 					return state;
 			}
+
 		case 'SET_LOCATION':
 			if ( doesCartLocationDifferFromResponseCartLocation( state.responseCart, action.location ) ) {
 				debug( 'setting location on cart', action.location );
@@ -219,6 +221,7 @@ function shoppingCartReducer(
 			}
 			debug( 'cart location is the same; not updating' );
 			return state;
+
 		default:
 			return state;
 	}

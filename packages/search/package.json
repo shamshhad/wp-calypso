@@ -34,7 +34,7 @@
 		"@wordpress/i18n": "^3.14.0",
 		"@wordpress/icons": "^2.4.0",
 		"classnames": "^2.2.6",
-		"lodash": "^4.17.15"
+		"lodash": "^4.17.20"
 	},
 	"peerDependencies": {
 		"react": "^16.8",

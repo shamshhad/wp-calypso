@@ -37,8 +37,8 @@
 		"lodash": "^4.17.15"
 	},
 	"peerDependencies": {
-		"react": "^16.8",
-		"react-dom": "^16.8"
+		"react": "^16.14",
+		"react-dom": "^16.14"
 	},
 	"devDependencies": {
 		"@storybook/addon-actions": "^5.3.18"

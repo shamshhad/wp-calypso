@@ -43,7 +43,7 @@
 	},
 	"peerDependencies": {
 		"@wordpress/i18n": "^3.14.0",
-		"react": "^16.8"
+		"react": "^16.14"
 	},
 	"private": true
 }

@@ -13,11 +13,11 @@ import { AppState } from 'calypso/types';
  * @param {object} siteId Site ID
  * @returns {boolean} True if site is private
  */
-export default function isPrivateSite( state: AppState, siteId: number ): boolean | null {
+export default function isPrivateSite( state: AppState, siteId: number ): boolean {
 	const site = getRawSite( state, siteId );
 
 	if ( site ) {
-		return site.is_private;
+		return !! site.is_private;
 	}
 
 	const settings = getSiteSettings( state, siteId );
@@ -27,5 +27,5 @@ export default function isPrivateSite( state: AppState, siteId: number ): boolea
 		return parseInt( settings.blog_public, 10 ) === -1;
 	}
 
-	return null;
+	return false;
 }
